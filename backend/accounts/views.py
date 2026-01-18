@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate, logout
-from .forms import CustomUserCreationForm, CustomAuthenticationForm
+from .forms import CustomUserCreationForm, CustomAuthenticationForm, ProfileForm
+from django.contrib.auth.decorators import login_required
 
 def signup_view(request):
     if request.method == "POST":
@@ -27,3 +28,15 @@ def login_view(request):
 def logout_view(request):
     logout(request)
     return redirect("home")
+
+@login_required
+def edit_profile(request):
+    profile = request.user.profile
+    if request.method == "POST":
+        form = ProfileForm(request.POST, request.FILES, instance=profile)
+        if form.is_valid():
+            form.save()
+            return redirect("profile_view")
+    else:
+        form = ProfileForm(instance=profile)
+    return render(request, 'accounts/edit_profile.html', {'form': form})

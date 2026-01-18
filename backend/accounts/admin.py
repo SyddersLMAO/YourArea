@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import User
+from .models import User, Profile
 
 @admin.register(User)
 class UserAdmin(admin.ModelAdmin):
@@ -7,3 +7,7 @@ class UserAdmin(admin.ModelAdmin):
     search_fields = ("email", "username")
     list_filter = ("is_staff", "is_active")
     ordering = ("-date_joined",)
+
+@admin.register(Profile)
+class ProfileAdmin(admin.ModelAdmin):
+    list_display = ('user', 'bio', 'website')
