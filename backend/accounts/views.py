@@ -1,7 +1,12 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth import login, authenticate, logout
+from rest_framework.response import Response
 from .forms import CustomUserCreationForm, CustomAuthenticationForm, ProfileForm
+from .serializers import ProfileSerializer
+from .models import User
 from django.contrib.auth.decorators import login_required
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import AllowAny, IsAuthenticated
 
 def signup_view(request):
     if request.method == "POST":
@@ -40,3 +45,10 @@ def edit_profile(request):
     else:
         form = ProfileForm(instance=profile)
     return render(request, 'accounts/edit_profile.html', {'form': form})
+
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def profile_view(request, username):
+    user = get_object_or_404(User, username__iexact=username)
+    serializer = ProfileSerializer(user.profile)
+    return Response(serializer.data)
