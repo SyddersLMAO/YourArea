@@ -52,3 +52,29 @@ def profile_view(request, username):
     user = get_object_or_404(User, username__iexact=username)
     serializer = ProfileSerializer(user.profile)
     return Response(serializer.data)
+
+@api_view(['PUT'])
+@permission_classes([IsAuthenticated])
+def profile_edit(request):
+    profile = request.user.profile
+    serializer = ProfileSerializer(profile, data=request.data, partial=True)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data)
+    return Response(serializer.errors, status=400)
+
+@api_view(['GET', 'PUT'])
+@permission_classes([IsAuthenticated])
+def current_user_profile(request):
+    profile = request.user.profile
+
+    if request.method == 'GET':
+        serializer = ProfileSerializer(profile)
+        return Response(serializer.data)
+
+    if request.method == 'PUT':
+        serializer = ProfileSerializer(profile, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=400)

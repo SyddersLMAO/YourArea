@@ -1,4 +1,4 @@
-import { getProfile } from "../services/profile";
+import { getProfile } from "../services/getProfile";
 
 interface Props {
   params: { username: string };

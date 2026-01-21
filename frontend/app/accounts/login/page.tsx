@@ -23,27 +23,27 @@ export default function LoginPage() {
         } catch (err) {
             setError("Login failed. Please check your credentials.");
         }
+    }
 
-        return (
-        <div style={{ maxWidth: "400px", margin: "50px auto", textAlign: "center" }}>
-            <form onSubmit={handleSubmit}>
-                <input
-                    type="email"
-                    placeholder="Email"
-                    value={email}
-                    onChange={e => setEmail(e.target.value)}
-                    required
-                />
-                <input
-                    type="password"
-                    placeholder="Password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    required
-                />
-                {error && <p style={{ color: "red" }}>{error}</p>}
-                <button>Login</button>
-            </form>
-        </div>
-    );}
-}
+    return (
+    <div style={{ maxWidth: "400px", margin: "50px auto", textAlign: "center" }}>
+        <form onSubmit={handleSubmit}>
+            <input
+                type="email"
+                placeholder="Email"
+                value={email}
+                onChange={e => setEmail(e.target.value)}
+                required
+            />
+            <input
+                type="password"
+                placeholder="Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+            />
+            {error && <p style={{ color: "red" }}>{error}</p>}
+            <button>Login</button>
+        </form>
+    </div>
+);}
